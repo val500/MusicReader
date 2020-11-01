@@ -28,4 +28,4 @@ def find_lines():
     hor_vals = np.array(hor_vals)
     model = KMeans(5).fit(hor_vals.reshape((-1, 1)))
     print(model.cluster_centers_)
-    return model.cluster_centers_
+    return model.cluster_centers_.reshape(5)
