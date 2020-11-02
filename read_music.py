@@ -3,6 +3,8 @@ import cv2
 import math
 from  matplotlib import pyplot  as plt
 from sklearn.cluster import KMeans
+
+
 def find_lines():
     img = cv2.imread('music.png')
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -29,3 +31,16 @@ def find_lines():
     model = KMeans(5).fit(hor_vals.reshape((-1, 1)))
     print(model.cluster_centers_)
     return model.cluster_centers_.reshape(5)
+
+def find_notes(notes, lines):
+    all_line_pos = []
+    note_vals = ['d1', 'e1', 'f1', 'g1', 'a1', 'b1', 'c1', 'd2', 'e2', 'f2', 'g2']
+    for i in range(0, len(lines) - 1, 2):
+        all_line_pos.append(lines[i])
+        all_line_pos.append((lines[i] + lines[i+1]) / 2)
+        all_line_pos.append(lines[i+1])
+    all_line_pos = np.array(all_line_pos)
+    note_arr = []
+    for n in notes:
+        note_arr.append(note_vals[np.argmin(all_line_pos - n)])
+    return np.array(note_arr)
