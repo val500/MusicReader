@@ -36,6 +36,19 @@ def find_circles():
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     circles = cv2.HoughCircles(gray,cv2.HOUGH_GRADIENT,1,1,param1=100,param2=100,minRadius=0,maxRadius=100)
     print(circles)
+def find_circles():
+    img = cv2.imread('music.png')
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    
+    params = cv2.SimpleBlobDetector_Params()
+    params.minThreshold = 10
+    params.maxThreshold = 200
+
+    detector = cv2.SimpleBlobDetector_create(params)
+    keypoints = detector.detect(gray)
+    pts = cv2.KeyPoint_convert(keypoints)
+    sort_pts = pts[pts[:,0].argsort()]
+    return sort_pts[:,1].reshape(-1)
 
 def find_notes(notes, lines):
     all_line_pos = []
