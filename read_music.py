@@ -4,8 +4,12 @@ import math
 from  matplotlib import pyplot  as plt
 from sklearn.cluster import KMeans
 
-def find_lines():
-    img = cv2.imread('music.png')
+def scan_image():
+    imgName = 'music.png'
+    
+
+def find_lines(imgName):
+    img = cv2.imread(imgName)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     edges = cv2.Canny(gray, 80, 120)
     #plt.imshow(edges)
@@ -30,14 +34,9 @@ def find_lines():
     model = KMeans(5).fit(hor_vals.reshape((-1, 1)))
     print(model.cluster_centers_)
     return model.cluster_centers_.reshape(5)
-
-def find_circles():
-    img = cv2.imread('music.png')
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    circles = cv2.HoughCircles(gray,cv2.HOUGH_GRADIENT,1,1,param1=100,param2=100,minRadius=0,maxRadius=100)
-    print(circles)
-def find_circles():
-    img = cv2.imread('music.png')
+    
+def find_circles(imgName):
+    img = cv2.imread(imgName)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     
     params = cv2.SimpleBlobDetector_Params()
