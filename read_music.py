@@ -4,8 +4,16 @@ import math
 from  matplotlib import pyplot  as plt
 from sklearn.cluster import KMeans
 
-def find_lines():
-    img = cv2.imread('music.png')
+def scan_image():
+    imgName = 'music.png'
+    img = cv2.imread(imgName)
+    lines = find_lines(imgName)
+    circles = find_circles(imgName)
+    note_arr = find_notes(circles, lines)
+    return note_arr
+
+def find_lines(imgName):
+    img = cv2.imread(imgName)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     edges = cv2.Canny(gray, 80, 120)
     #plt.imshow(edges)
@@ -21,31 +29,40 @@ def find_lines():
         pt2 = (line[2], line[3])
         cv2.line(img, pt1, pt2, (0,0,255), 3)
         line_pts.append((pt1, pt2))
-    print(line_pts)
     hor_vals = []
     for pt1, pt2 in line_pts:
         if pt1[1] == pt2[1]:
             hor_vals.append(pt1[1])
     hor_vals = np.array(hor_vals)
     model = KMeans(5).fit(hor_vals.reshape((-1, 1)))
-    print(model.cluster_centers_)
     return model.cluster_centers_.reshape(5)
-
-def find_circles():
-    img = cv2.imread('music.png')
+    
+def find_circles(imgName):
+    img = cv2.imread(imgName)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    circles = cv2.HoughCircles(gray,cv2.HOUGH_GRADIENT,1,1,param1=100,param2=100,minRadius=0,maxRadius=100)
-    print(circles)
+    
+    params = cv2.SimpleBlobDetector_Params()
+    params.minThreshold = 10
+    params.maxThreshold = 200
+
+    detector = cv2.SimpleBlobDetector_create(params)
+    keypoints = detector.detect(gray)
+    pts = cv2.KeyPoint_convert(keypoints)
+    sort_pts = pts[pts[:,0].argsort()]
+    return sort_pts[:,1].reshape(-1)
 
 def find_notes(notes, lines):
     all_line_pos = []
+    lines = np.sort(lines)[::-1]
     note_vals = ['d1', 'e1', 'f1', 'g1', 'a1', 'b1', 'c1', 'd2', 'e2', 'f2', 'g2']
-    for i in range(0, len(lines) - 1, 2):
+    all_line_pos.append(lines[0] + (lines[0] - ((lines[0] + lines[1]) / 2)))
+    for i in range(0, len(lines) - 1):
         all_line_pos.append(lines[i])
         all_line_pos.append((lines[i] + lines[i+1]) / 2)
-        all_line_pos.append(lines[i+1])
+    all_line_pos.append(lines[-1])
+    all_line_pos.append(lines[-1] + (lines[-1] - ((lines[-2] + lines[-1]) / 2)))
     all_line_pos = np.array(all_line_pos)
     note_arr = []
     for n in notes:
-        note_arr.append(note_vals[np.argmin(all_line_pos - n)])
+        note_arr.append(note_vals[np.argmin(np.abs(n - all_line_pos))])
     return np.array(note_arr)
