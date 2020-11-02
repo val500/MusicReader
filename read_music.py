@@ -37,4 +37,15 @@ def find_circles():
     circles = cv2.HoughCircles(gray,cv2.HOUGH_GRADIENT,1,1,param1=100,param2=100,minRadius=0,maxRadius=100)
     print(circles)
 
-find_circles()
+def find_notes(notes, lines):
+    all_line_pos = []
+    note_vals = ['d1', 'e1', 'f1', 'g1', 'a1', 'b1', 'c1', 'd2', 'e2', 'f2', 'g2']
+    for i in range(0, len(lines) - 1, 2):
+        all_line_pos.append(lines[i])
+        all_line_pos.append((lines[i] + lines[i+1]) / 2)
+        all_line_pos.append(lines[i+1])
+    all_line_pos = np.array(all_line_pos)
+    note_arr = []
+    for n in notes:
+        note_arr.append(note_vals[np.argmin(all_line_pos - n)])
+    return np.array(note_arr)
