@@ -3,7 +3,7 @@ This project is designed to read in sheet music and play the associated notes.
 
 ## Usage
 ``` bash
-python3 main.py
+python3 main.py "filename"
 ```
 
 ## Info
