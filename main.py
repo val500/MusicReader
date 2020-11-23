@@ -1,6 +1,6 @@
 import sys
 import musicalbeeps
-from read_music import scan_image, levenshtein
+from read_music import scan_image, levenshtein, randomstring
 import cv2
 from  matplotlib import pyplot  as plt
 import numpy as np
@@ -30,6 +30,7 @@ def evaluate():
     files = ["music1.png", "music2.png", "music3.png", "music4.png", "music5.png", "two_lines.jpg"]
 
     total_dist = 0
+    random_distance = 0
     for f in files:
         fname = f.split('.')[0]
         correct_notes = np.load("music_no_clef/" + fname + ".npy")
