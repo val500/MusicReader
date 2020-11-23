@@ -1,4 +1,5 @@
 import numpy as np
+import random
 import cv2
 import math
 from  matplotlib import pyplot  as plt
@@ -99,3 +100,12 @@ def levenshtein(s1, s2):
         previous_row = current_row
     
     return previous_row[-1]
+
+def randomstring(s1):
+    s2 = []
+    bare_notes = ['d1', 'e1', 'f1', 'g1', 'a1', 'b1', 'c1', 'd2', 'e2', 'f2', 'g2']
+    for i in range(len(s1)):
+        randchar = bare_notes[random.randrange(0,len(bare_notes))]
+        s2.append(randchar)
+    print(s2)
+    return levenshtein(s1,s2)
