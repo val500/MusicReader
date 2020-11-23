@@ -1,0 +1,16 @@
+---
+:id: 52938622
+:submitters:
+- :name: Varun Valada
+  :email: vvalada3@gatech.edu
+- :name: Aadi Kapur
+  :email: akapur@gatech.edu
+- :name: Maia Lina Ohlinger
+  :email: mohlinger3@gatech.edu
+:created_at: !ruby/object:ActiveSupport::TimeWithZone
+  utc: 2020-11-02 04:03:05.369521000 Z
+  zone: !ruby/object:ActiveSupport::TimeZone
+    name: America/Los_Angeles
+  time: 2020-11-01 20:03:05.369521000 Z
+:status: processed
+:score: 80.0

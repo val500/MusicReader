@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en"><head>  
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <title>Computer Vision Class Project
+  | CS, Georgia Tech | Fall 2020: CS 4476</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+<!-- Le styles -->  
+  <link href="css/bootstrap.css" rel="stylesheet">
+<style>
+body {
+padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+}
+.vis {
+color: #3366CC;
+}
+.data {
+color: #FF9900;
+}
+</style>
+  
+<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
+
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements --><!--[if lt IE 9]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+</head>
+
+<body>
+<div class="container">
+<div class="page-header">
+
+<!-- Title and Name --> 
+<h1>Sheet Music Reader</h1> 
+<span style="font-size: 20px; line-height: 1.5em;"><strong>Aadi Kapur, Maia Ohlinger, Varun Valada</strong></span><br>
+<span style="font-size: 18px; line-height: 1.5em;">Fall 2020 CS 4476 Computer Vision: Class Project</span><br>
+<span style="font-size: 18px; line-height: 1.5em;">Georgia Tech</span>
+<hr>
+
+<!--Please see <a href="http://vision.cs.utexas.edu/projects/adapted_attributes/">this</a> for an example of how to lay out the various details of your project. You may need to provide more details than this, beause you will not be submitting an associated paper to accompany the webpage. So the page should be self-contained-->
+
+<!-- Goal -->
+<h3>Abstract</h3>
+
+We are creating a system where a user can input a picture of sheet music (JPG or PNG) and the program will play the notes as written on the page, which will be outputted as an audio file (MP3, MIDI, WAV) file. For simplicity, we will first add functionality to play quarter notes within the staff, then we will add time signature, rhythm, and chords if we have the time.
+<br><br>
+<!-- figure -->
+<h3>Teaser figure</h3>
+Here is an example of the type of an advanced version of the sheet music that could potentially be inputted into the algorithm and the MIDI file produced from the sheet music.
+<br><br>
+<!-- Main Illustrative Figure --> 
+<img src="The Legend of Zelda Ocarina of Time - Ocarina Melodies-1.png" alt="Ocarina Melodies Sheet Music" class="center" width="500" height="600"></img>
+<br><br>
+Here would be the outputted <a href="The Legend of Zelda Ocarina of Time - Ocarina Melodies.mid">MIDI file</a> for the inputted sheet music above.
+<br><br>
+Source: <a href="https://www.ninsheetmusic.org/browse/series/TheLegendofZelda">Sebastian</a>
+<br><br>
+<!-- Introduction -->
+<h3>Introduction</h3>
+A lot of musicians find it helpful during the process of learning new repertoire to have recordings to listen to in order to adjust their playing to better match a piece’s rhythm or intonation. With the Sheet Music Reader, a user passes an image of sheet music into the algorithm and it computes the note values based on the position of the notes on the staff. An audio file is then produced for the musician to listen to in order to aid them in learning their repertoire.
+
+<br><br>
+<!-- Approach -->
+<h3>Approach</h3>
+<figure>
+  <img src="music1.png" alt="Music" class="center"></img>
+  <figcaption>Fig 1. Original sheet music</figcaption>
+</figure>
+<br><br>
+First, the image was loaded in and converted to grayscale. On the grayscale image, a Hough Line transformation was performed using the OpenCV library to find horizontal line segments across the entire image in order to find the positions of each line in the staff. The y coordinates of each horizontal line segment were gathered and clustered into 5 groups using KMeans clustering in the SciKitLearn library and stored in an array, representing the 5 lines in the staff. The positions between each line were also calculated and added to this list. 
+<br><br>
+<figure>
+  <img src="musicStaff.png" alt="Music Staff" class="center"></img>
+  <figcaption>Fig 2. Sheet music with Hough Line transformation done on the staff</figcaption>
+</figure>
+<br><br>
+After finding the y coordinates of the lines in the staff, the y positions of each note were calculated. In order to find this, a Simple Blob Detector was used from the OpenCV library to find the coordinates of the center of each note. On an array of centers sorted by the x coordinate, each note center y-value was compared to each line value calculated previously in order to find the closest line position. Each line position is given a note value so each note is assigned a note value. The array of note values for each note is returned as the result. 
+<br><br>
+<figure>
+  <img src="musicNotes.png" alt="Music Notes" class="center"></img>
+  <figcaption>Fig 3. Sheet music with Blob Detection done on the note heads</figcaption>
+</figure>
+<br><br>
+
+<br><br>
+<!-- Results -->
+<h3>Experiments and Results</h3>
+We used 5 images with sheet music in our dataset. We evaluated our approach by comparing the output of our code as an array of note names to an array of note names we created with the correct values of the notes in the 5 images. Our approach read 100% of the notes correctly. We used canny edge detection on a grayscale version of the image to detect the lines. We used Simple Blob Detection to detect the ellipses representing the notes. We first used Hough Transform to detect these. We changed the parameters for minimum distance between circle centers, minimum and maximum radius, accumulator threshold and edge detection threshold. But we either saw too few circles be detected or circles being detected at incorrect spots. We determined that the reason we were seeing this lack of performance was because the notes were slightly elliptical. We switched our approach to use simple blob detection instead of Hough transform once we were sure that the ellipses would be better detected using that approach. The parameters we used for blob detection were threshold values for the size of the blobs.
+
+<br><br>
+
+<!-- Main Results Figure --> 
+<!-- <div style="text-align: center;">
+<img style="height: 300px;" alt="" src="results.png">
+</div>
+<br><br> -->
+
+<!-- Results -->
+<h3>Qualitative results</h3>
+Below is the image ran through the algorithm:
+<br><br>
+<img src="music1.png" alt="Music" class="center"></img>
+<br><br>
+Below is an array containing the algorithm's computed note values for each note on the staff of the image:
+<br><br>
+<img src="output1.png" alt="Output" class="center"></img>
+<br><br>
+The outputted array has computed all the correct note values for all of the notes on the staff. The code can be ran with the algorithm on the <a href="https://github.com/val500/MusicReader">Music Reader</a> repository.
+<br><br>
+
+<!-- Conclusion -->
+<h3>Conclusion and Future Work</h3>
+Based on our current results, we can now compute the note values on the staff for a line of music. For future work, we want to be able to take these computed note values to create an audio file based on the image. After creating this audio file, we want to increase the number of lines of music on the page that is processed by our algorithm, and then gradually add more complexity to the music with rhythm, dynamic markings, clefs, and ledger lines above and below the staff.
+<br><br>
+
+<!-- Resources -->
+<h3>Resources</h3>
+OpenCV Library, Sklearn Library, Numpy
+<br><br>
+
+
+
+
+  <hr>
+  <footer> 
+  <p>© Aadi Kapur, Maia Ohlinger, Varun Valada</p>
+  </footer>
+</div>
+</div>
+
+<br><br>
+
+</body></html>
