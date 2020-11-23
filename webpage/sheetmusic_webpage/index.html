@@ -61,7 +61,7 @@ Source: <a href="https://www.ninsheetmusic.org/browse/series/TheLegendofZelda">S
 <!-- Introduction -->
 <h3>Introduction</h3>
 A lot of musicians find it helpful during the process of learning new repertoire to have recordings to listen to in order to adjust their playing to better match a piece’s rhythm or intonation. With the Sheet Music Reader, a user passes an image of sheet music into the algorithm and it computes the note values based on the position of the notes on the staff. An audio file is then produced for the musician to listen to in order to aid them in learning their repertoire.
-
+Approaches in the past that have been used to read sheet music use a methodology called Optical Music Recognition, in which the sheet music is first preprocessed to extract staffs and primitive elements, the isolated notes are distinguished using a classifier and outputted as a MIDI file. While the notes are sometimes read using a machine learning model that trains over a dataset before reading the isolated notes. But we will use computer vision principles like Hough line transformations, blob detection and canny edge detection to read the extracted notes. This creates for a more simplistic design and a fast, efficient program to generate an audio file from the sheet music.
 <br><br>
 <!-- Approach -->
 <h3>Approach</h3>
