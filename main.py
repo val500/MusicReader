@@ -39,9 +39,8 @@ def evaluate():
         predicted_notes = scan_image("music_no_clef/" + f, num_lines)
         edit_distance = levenshtein(correct_notes, predicted_notes) / num_lines
         total_dist += edit_distance
+        random_distance += randomstring(correct_notes) / num_lines
         print(fname + ": " + str(edit_distance))
     print("Average Edit Distance : " + str(total_dist / len(files)))
-main()
-
-        
-    
+    print("Average random distance: " + str(random_distance / len(files)))
+evaluate()
