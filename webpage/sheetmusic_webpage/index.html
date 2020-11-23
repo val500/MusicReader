@@ -88,7 +88,12 @@ After finding the y coordinates of the lines in the staff, the y positions of ea
 <br><br>
 <!-- Results -->
 <h3>Experiments and Results</h3>
-We used 5 images with sheet music in our dataset. We evaluated our approach by comparing the output of our code as an array of note names to an array of note names we created with the correct values of the notes in the 5 images. Our approach read 100% of the notes correctly. We used canny edge detection on a grayscale version of the image to detect the lines. We used Simple Blob Detection to detect the ellipses representing the notes. We first used Hough Transform to detect these. We changed the parameters for minimum distance between circle centers, minimum and maximum radius, accumulator threshold and edge detection threshold. But we either saw too few circles be detected or circles being detected at incorrect spots. We determined that the reason we were seeing this lack of performance was because the notes were slightly elliptical. We switched our approach to use simple blob detection instead of Hough transform once we were sure that the ellipses would be better detected using that approach. The parameters we used for blob detection were threshold values for the size of the blobs.
+
+We used 6 images with sheet music in our dataset. We evaluated our approach by measuring the edit distance per line between the output of our code as an array of note names to an array of note names we created with the correct values of the notes in the 5 images using the Levenshtein method. This method measured how many additions, substitutions, or deletions needed to be added to get to the correct string of notes. Our approach across the 6 images found an average of 1.5 edits per line were required to get to the correct image. For a baseline, random note values were generated to compare against the correct values for each image. The average edit distance per line was BLANK%, which means the algorithm performed BLANK% better than the baseline.
+
+<br><br>
+
+We used canny edge detection on a grayscale version of the image to detect the lines. We used Simple Blob Detection to detect the ellipses representing the notes. We first used Hough Transform to detect these. We changed the parameters for minimum distance between circle centers, minimum and maximum radius, accumulator threshold and edge detection threshold. But we either saw too few circles be detected or circles being detected at incorrect spots. We determined that the reason we were seeing this lack of performance was because the notes were slightly elliptical. We switched our approach to use simple blob detection instead of Hough transform once we were sure that the ellipses would be better detected using that approach. The parameters we used for blob detection were threshold values for the size of the blobs.
 
 <br><br>
 
@@ -111,18 +116,23 @@ Below is an array containing the algorithm's computed note values for each note 
 The outputted array has computed all the correct note values for all of the notes on the staff. The code can be ran with the algorithm on the <a href="https://github.com/val500/MusicReader">Music Reader</a> repository.
 <br><br>
 
+This is the generated mp3 for the music. <br>
+<audio src="./music1.m4a" type="audio/x-m4a" controls autoplay >
+  <code> Your browser doesn't support audio tags</code>
+</audio>
+
 <!-- Conclusion -->
 <h3>Conclusion and Future Work</h3>
-Based on our current results, we can now compute the note values on the staff for a line of music. For future work, we want to be able to take these computed note values to create an audio file based on the image. After creating this audio file, we want to increase the number of lines of music on the page that is processed by our algorithm, and then gradually add more complexity to the music with rhythm, dynamic markings, clefs, and ledger lines above and below the staff.
+ Based on our current results, we can now compute the note values on the staff for multiple lines of music. For future work, we want to be able to add more complexity to the music with rhythm, dynamic markings, clefs, and ledger lines above and below the staff.
 <br><br>
 
 <!-- Resources -->
-<h3>Resources</h3>
-OpenCV Library, Sklearn Library, Numpy
+<h3>Resources and References</h3>
+OpenCV Library, Sklearn Library, Numpy <br>
+
+<a href="https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#Python">https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#Python</a> <br>
+<a href="https://stackoverflow.com/questions/8076889/how-to-use-opencv-simpleblobdetector"> https://stackoverflow.com/questions/8076889/how-to-use-opencv-simpleblobdetector </a> <br>
 <br><br>
-
-
-
 
   <hr>
   <footer> 
