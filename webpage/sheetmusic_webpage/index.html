@@ -70,7 +70,7 @@ A lot of musicians find it helpful during the process of learning new repertoire
   <figcaption>Fig 1. Original sheet music</figcaption>
 </figure>
 <br><br>
-First, the image was loaded in and converted to grayscale. On the grayscale image, a Hough Line transformation was performed using the OpenCV library to find horizontal line segments across the entire image in order to find the positions of each line in the staff. The y coordinates of each horizontal line segment were gathered and clustered into 5 groups using KMeans clustering in the SciKitLearn library and stored in an array, representing the 5 lines in the staff. The positions between each line were also calculated and added to this list. 
+First, the image was loaded in and converted to grayscale. A canny edge detector was then applied to get the edges on the image. On the edges image, a Hough Line transformation was performed using the OpenCV library to find horizontal line segments across the entire image in order to find the positions of each line in the staff. The y coordinates of each horizontal line segment were gathered and clustered into 5 times the number of staff lines groups using KMeans clustering in the SciKitLearn library and stored in an array, representing the 5 lines in the staff for each staff in the image. The positions between each line were also calculated and added to this list. 
 <br><br>
 <figure>
   <img src="musicStaff.png" alt="Music Staff" class="center"></img>

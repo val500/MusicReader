@@ -24,8 +24,6 @@ def main():
     for note in notes:
         player.play_note(note_map[note])
     
-#main()
-
 
 def evaluate():
     img_folder = "music_no_clef"
